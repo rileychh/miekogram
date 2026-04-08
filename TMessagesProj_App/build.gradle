@@ -50,7 +50,6 @@ android {
             if (localProperties.getProperty("storeFile") != null) {
                 signingConfig signingConfigs.sign
             }
-            applicationIdSuffix ".beta"
         }
 
         release {
