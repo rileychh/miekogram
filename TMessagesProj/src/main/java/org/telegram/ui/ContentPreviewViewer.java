@@ -112,7 +112,7 @@ import org.telegram.ui.Stories.DarkThemeResourceProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-import tw.nekomimi.nekogram.helpers.MessageHelper;
+import dev.rileychh.nekogram.helpers.MessageHelper;
 import me.vkryl.core.reference.ReferenceList;
 
 public class ContentPreviewViewer {

@@ -16,7 +16,7 @@ import com.android.billingclient.api.ProductDetails;
 
 import java.util.Objects;
 
-import tw.nekomimi.nekogram.Extra;
+import dev.rileychh.nekogram.Extra;
 
 public class BuildVars {
 

@@ -53,9 +53,9 @@ import java.util.Objects;
 import java.util.Set;
 
 import app.nekogram.translator.Http429Exception;
-import tw.nekomimi.nekogram.NekoConfig;
-import tw.nekomimi.nekogram.helpers.MessageHelper;
-import tw.nekomimi.nekogram.translator.Translator;
+import dev.rileychh.nekogram.NekoConfig;
+import dev.rileychh.nekogram.helpers.MessageHelper;
+import dev.rileychh.nekogram.translator.Translator;
 
 public class TranslateController extends BaseController {
 

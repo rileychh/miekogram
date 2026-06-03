@@ -77,10 +77,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import tw.nekomimi.nekogram.NekoConfig;
-import tw.nekomimi.nekogram.forward.ForwardContext;
-import tw.nekomimi.nekogram.forward.ForwardDrawable;
-import tw.nekomimi.nekogram.forward.ForwardItem;
+import dev.rileychh.nekogram.NekoConfig;
+import dev.rileychh.nekogram.forward.ForwardContext;
+import dev.rileychh.nekogram.forward.ForwardDrawable;
+import dev.rileychh.nekogram.forward.ForwardItem;
 
 public class SearchViewPager extends ViewPagerFixed implements FilteredSearchView.UiCallback, NotificationCenter.NotificationCenterDelegate, IBlur3Capture {
 

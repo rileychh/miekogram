@@ -213,11 +213,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicReference;
 
-import tw.nekomimi.nekogram.BackButtonMenuRecent;
-import tw.nekomimi.nekogram.EditTextAutoFill;
-import tw.nekomimi.nekogram.QrView;
-import tw.nekomimi.nekogram.helpers.PasscodeHelper;
-import tw.nekomimi.nekogram.helpers.PopupHelper;
+import dev.rileychh.nekogram.BackButtonMenuRecent;
+import dev.rileychh.nekogram.EditTextAutoFill;
+import dev.rileychh.nekogram.QrView;
+import dev.rileychh.nekogram.helpers.PasscodeHelper;
+import dev.rileychh.nekogram.helpers.PopupHelper;
 
 @SuppressLint("HardwareIds")
 public class LoginActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {

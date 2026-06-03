@@ -44,8 +44,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 
-import tw.nekomimi.nekogram.NekoConfig;
-import tw.nekomimi.nekogram.helpers.EmojiHelper;
+import dev.rileychh.nekogram.NekoConfig;
+import dev.rileychh.nekogram.helpers.EmojiHelper;
 
 public class Emoji {
 

@@ -67,7 +67,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import tw.nekomimi.nekogram.NekoConfig;
+import dev.rileychh.nekogram.NekoConfig;
 
 public class VoIPHelper {
 

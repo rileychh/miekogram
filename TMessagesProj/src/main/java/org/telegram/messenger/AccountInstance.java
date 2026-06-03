@@ -5,9 +5,9 @@ import android.content.SharedPreferences;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.ui.Components.Paint.PersistColorPalette;
 
-import tw.nekomimi.nekogram.helpers.InlineBotHelper;
-import tw.nekomimi.nekogram.helpers.MessageHelper;
-import tw.nekomimi.nekogram.helpers.UserHelper;
+import dev.rileychh.nekogram.helpers.InlineBotHelper;
+import dev.rileychh.nekogram.helpers.MessageHelper;
+import dev.rileychh.nekogram.helpers.UserHelper;
 
 public class AccountInstance {
 

@@ -120,11 +120,11 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import tw.nekomimi.nekogram.NekoConfig;
-import tw.nekomimi.nekogram.helpers.MessageFilterHelper;
-import tw.nekomimi.nekogram.helpers.MessageHelper;
-import tw.nekomimi.nekogram.syntaxhighlight.SyntaxHighlight;
-import tw.nekomimi.nekogram.translator.Translator;
+import dev.rileychh.nekogram.NekoConfig;
+import dev.rileychh.nekogram.helpers.MessageFilterHelper;
+import dev.rileychh.nekogram.helpers.MessageHelper;
+import dev.rileychh.nekogram.syntaxhighlight.SyntaxHighlight;
+import dev.rileychh.nekogram.translator.Translator;
 
 import me.vkryl.core.BitwiseUtils;
 

@@ -15,7 +15,7 @@ import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import tw.nekomimi.nekogram.NekoConfig;
+import dev.rileychh.nekogram.NekoConfig;
 
 public class ImportingService extends Service implements NotificationCenter.NotificationCenterDelegate {
 

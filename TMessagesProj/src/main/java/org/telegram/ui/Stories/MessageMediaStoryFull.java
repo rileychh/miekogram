@@ -8,7 +8,7 @@ import org.telegram.tgnet.OutputSerializedData;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.tgnet.tl.TL_stories;
 
-import tw.nekomimi.nekogram.helpers.WebAppHelper;
+import dev.rileychh.nekogram.helpers.WebAppHelper;
 
 public class MessageMediaStoryFull extends TLRPC.TL_messageMediaStory {
 

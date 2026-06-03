@@ -49,7 +49,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import tw.nekomimi.nekogram.helpers.WebAppHelper;
+import dev.rileychh.nekogram.helpers.WebAppHelper;
 
 public class TLRPC {
 

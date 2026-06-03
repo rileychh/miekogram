@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import tw.nekomimi.nekogram.appcompat.AppCompatEditText;
+import dev.rileychh.nekogram.appcompat.AppCompatEditText;
 
 public class EditTextEffects extends AppCompatEditText {
     private final static int SPOILER_TIMEOUT = 10000;
