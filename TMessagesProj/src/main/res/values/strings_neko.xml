@@ -113,6 +113,8 @@
     <string name="AccentAsNotificationColor">Accent color as notification color</string>
     <string name="SilenceNonContacts">Silence Non-Contacts</string>
     <string name="SilenceNonContactsAbout">Notifications from people that are not your contacts will appear without sound. You can add users to contacts from their profile without knowing their phone number.</string>
+    <string name="GroupNotifications">Group notifications</string>
+    <string name="GroupNotificationsAbout">When enabled, messages from multiple chats are bundled into a single grouped notification. Disable to receive a separate notification per chat.</string>
     <string name="SelectBetween">Select between</string>
     <string name="StickerSavedHint">Sticker saved to gallery</string>
     <string name="RegistrationDate">Registration date</string>

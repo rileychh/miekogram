@@ -124,6 +124,7 @@ public class NekoConfig {
     public static boolean formatTimeWithSeconds = false;
     public static boolean accentAsNotificationColor = false;
     public static boolean silenceNonContacts = false;
+    public static boolean groupNotifications = true;
     public static boolean disableJumpToNextChannel = false;
     public static boolean disableVoiceMessageAutoPlay = false;
     public static boolean unmuteVideosWithVolumeButtons = true;
@@ -208,6 +209,7 @@ public class NekoConfig {
             formatTimeWithSeconds = preferences.getBoolean("formatTimeWithSeconds", false);
             accentAsNotificationColor = preferences.getBoolean("accentAsNotificationColor", false);
             silenceNonContacts = preferences.getBoolean("silenceNonContacts", false);
+            groupNotifications = preferences.getBoolean("groupNotifications", true);
             showNoQuoteForward = preferences.getBoolean("showNoQuoteForward", false);
             translationTarget = preferences.getString("translationTarget", "app");
             maxRecentStickers = preferences.getInt("maxRecentStickers", 20);
@@ -878,6 +880,14 @@ public class NekoConfig {
         SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("nekoconfig", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("silenceNonContacts", silenceNonContacts);
+        editor.apply();
+    }
+
+    public static void toggleGroupNotifications() {
+        groupNotifications = !groupNotifications;
+        SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("nekoconfig", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("groupNotifications", groupNotifications);
         editor.apply();
     }
 
