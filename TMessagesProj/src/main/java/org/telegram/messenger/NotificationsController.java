@@ -117,6 +117,8 @@ public class NotificationsController extends BaseController {
     private final LongSparseArray<Integer> pushDialogs = new LongSparseArray<>();
     private final LongSparseArray<Integer> wearNotificationsIds = new LongSparseArray<>();
     private final LongSparseArray<Integer> lastWearNotifiedMessageId = new LongSparseArray<>();
+    // Signature of the last posted per-dialog notification, to skip unchanged re-posts.
+    private final LongSparseArray<String> lastNotificationSignatures = new LongSparseArray<>();
     private final LongSparseArray<Integer> pushDialogsOverrideMention = new LongSparseArray<>();
     public final ArrayList<MessageObject> popupMessages = new ArrayList<>();
     public ArrayList<MessageObject> popupReplyMessages = new ArrayList<>();
@@ -380,6 +382,7 @@ public class NotificationsController extends BaseController {
             pushDialogs.clear();
             wearNotificationsIds.clear();
             lastWearNotifiedMessageId.clear();
+            lastNotificationSignatures.clear();
             openedInBubbleDialogs.clear();
             delayedPushMessages.clear();
             notifyCheck = false;
@@ -3250,6 +3253,7 @@ public class NotificationsController extends BaseController {
         notificationsQueue.postRunnable(() -> {
             notificationManager.cancel(notificationId);
             lastWearNotifiedMessageId.clear();
+            lastNotificationSignatures.clear();
             for (int a = 0; a < wearNotificationsIds.size(); a++) {
                 notificationManager.cancel(wearNotificationsIds.valueAt(a));
             }
@@ -3264,6 +3268,7 @@ public class NotificationsController extends BaseController {
             pushMessages.clear();
             pushMessagesDict.clear();
             lastWearNotifiedMessageId.clear();
+            lastNotificationSignatures.clear();
             for (int a = 0; a < wearNotificationsIds.size(); a++) {
                 long did = wearNotificationsIds.keyAt(a);
                 if (openedInBubbleDialogs.contains(did)) {
@@ -4836,13 +4841,15 @@ public class NotificationsController extends BaseController {
             long topicId;
             boolean story;
             String name;
+            String signature;
             TLRPC.User user;
             TLRPC.Chat chat;
             NotificationCompat.Builder notification;
 
-            NotificationHolder(int i, long li, boolean story, long topicId, String n, TLRPC.User u, TLRPC.Chat c, NotificationCompat.Builder builder) {
+            NotificationHolder(int i, long li, boolean story, long topicId, String n, String signature, TLRPC.User u, TLRPC.Chat c, NotificationCompat.Builder builder) {
                 id = i;
                 name = n;
+                this.signature = signature;
                 user = u;
                 chat = c;
                 notification = builder;
@@ -5557,11 +5564,6 @@ public class NotificationsController extends BaseController {
             if (useSummaryNotification) {
                 builder.setGroup(notificationGroup);
                 builder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
-            } else if (dialogId != lastDialogId) {
-                // Without a summary notification each chat is posted standalone, and every
-                // showExtraNotifications pass re-posts all of them. Only the chat that received
-                // the new message should alert again; the rest update silently.
-                builder.setOnlyAlertOnce(true);
             }
 
             TLRPC.TL_keyboardButtonCopy copybutton = null;
@@ -5635,7 +5637,9 @@ public class NotificationsController extends BaseController {
                 setNotificationChannel(mainNotification, builder, useSummaryNotification);
             }
             FileLog.d("showExtraNotifications: holders.add " + dialogId);
-            holders.add(new NotificationHolder(internalId, dialogId, dialogKey.story, topicId, name, user, chat, builder));
+            // null for stories (always re-posted); otherwise lets the final loop skip unchanged posts.
+            String signature = dialogKey.story ? null : (maxId + "|" + messageObjects.size() + "|" + maxDate);
+            holders.add(new NotificationHolder(internalId, dialogId, dialogKey.story, topicId, name, signature, user, chat, builder));
             wearNotificationsIds.put(dialogId, internalId);
         }
 
@@ -5674,6 +5678,10 @@ public class NotificationsController extends BaseController {
         FileLog.d("showExtraNotifications: holders.size()=" + holders.size());
         for (int a = 0, size = holders.size(); a < size; a++) {
             NotificationHolder holder = holders.get(a);
+            if (holder.signature != null && holder.signature.equals(lastNotificationSignatures.get(holder.dialogId))) {
+                FileLog.d("showExtraNotifications: holders["+a+"] unchanged, skip re-post " + holder.dialogId);
+                continue;
+            }
             ids.clear();
             if (Build.VERSION.SDK_INT >= 29 && !DialogObject.isEncryptedDialog(holder.dialogId)) {
                 String shortcutId = createNotificationShortcut(holder.notification, holder.dialogId, holder.name, holder.user, holder.chat, personCache.get(holder.dialogId), !holder.story);
@@ -5683,6 +5691,9 @@ public class NotificationsController extends BaseController {
             }
             FileLog.d("showExtraNotifications: holders["+a+"].call()");
             holder.call();
+            if (holder.signature != null) {
+                lastNotificationSignatures.put(holder.dialogId, holder.signature);
+            }
             if (!unsupportedNotificationShortcut() && !ids.isEmpty()) {
                 ShortcutManagerCompat.removeDynamicShortcuts(ApplicationLoader.applicationContext, ids);
             }
