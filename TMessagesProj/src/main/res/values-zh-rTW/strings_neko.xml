@@ -109,6 +109,8 @@
     <string name="AccentAsNotificationColor">強調色作為通知顏色</string>
     <string name="SilenceNonContacts">不接收非聯絡人的通知</string>
     <string name="SilenceNonContactsAbout">來自非您聯繫人的通知將無聲顯示。 您可以在不知道電話號碼的情況下將用戶從他們的個人資料添加到聯繫人。</string>
+    <string name="GroupNotificationsTogether">合併通知</string>
+    <string name="GroupNotificationsTogetherAbout">將多個聊天的訊息合併為一則通知。停用後每個聊天個別通知。</string>
     <string name="SelectBetween">選擇</string>
     <string name="StickerSavedHint">貼圖已儲存到圖庫</string>
     <string name="RegistrationDate">註冊日期</string>

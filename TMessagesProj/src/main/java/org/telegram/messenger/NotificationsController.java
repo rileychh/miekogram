@@ -5557,6 +5557,11 @@ public class NotificationsController extends BaseController {
             if (useSummaryNotification) {
                 builder.setGroup(notificationGroup);
                 builder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
+            } else if (dialogId != lastDialogId) {
+                // Without a summary notification each chat is posted standalone, and every
+                // showExtraNotifications pass re-posts all of them. Only the chat that received
+                // the new message should alert again; the rest update silently.
+                builder.setOnlyAlertOnce(true);
             }
 
             TLRPC.TL_keyboardButtonCopy copybutton = null;

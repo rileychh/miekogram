@@ -128,10 +128,9 @@ public class NekoGeneralSettingsActivity extends BaseNekoSettingsActivity {
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.Notifications)));
         items.add(UItem.asCheck(accentAsNotificationColorRow, LocaleController.getString(R.string.AccentAsNotificationColor)).slug("accentAsNotificationColor").setChecked(NekoConfig.accentAsNotificationColor));
-        items.add(UItem.asCheck(silenceNonContactsRow, LocaleController.getString(R.string.SilenceNonContacts)).slug("silenceNonContacts").setChecked(NekoConfig.silenceNonContacts));
-        items.add(UItem.asShadow(LocaleController.getString(R.string.SilenceNonContactsAbout)));
-        items.add(UItem.asCheck(groupNotificationsRow, LocaleController.getString(R.string.GroupNotifications)).slug("groupNotifications").setChecked(NekoConfig.groupNotifications));
-        items.add(UItem.asShadow(LocaleController.getString(R.string.GroupNotificationsAbout)));
+        items.add(UItem.asCheck(silenceNonContactsRow, LocaleController.getString(R.string.SilenceNonContacts), LocaleController.getString(R.string.SilenceNonContactsAbout)).slug("silenceNonContacts").setChecked(NekoConfig.silenceNonContacts));
+        items.add(UItem.asCheck(groupNotificationsRow, LocaleController.getString(R.string.GroupNotificationsTogether), LocaleController.getString(R.string.GroupNotificationsTogetherAbout)).slug("groupNotifications").setChecked(NekoConfig.groupNotifications));
+        items.add(UItem.asShadow(null));
 
         items.add(UItem.asHeader(LocaleController.getString(R.string.UserColorTabProfile)));
         items.add(TextSettingsCellFactory.of(nameOrderRow, LocaleController.getString(R.string.NameOrder), switch (NekoConfig.nameOrder) {

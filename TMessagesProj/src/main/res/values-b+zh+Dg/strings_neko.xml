@@ -109,6 +109,8 @@
     <string name="AccentAsNotificationColor">以强调色作为通知颜色</string>
     <string name="SilenceNonContacts">静音非联系人</string>
     <string name="SilenceNonContactsAbout">来自非您的联系人的通知将无声地出现。您可以将用户从他们的个人资料添加到联系人中，而无需知道他们的电话号码。</string>
+    <string name="GroupNotificationsTogether">合并通知</string>
+    <string name="GroupNotificationsTogetherAbout">将多个聊天的消息合并为一条通知。禁用后每个聊天单独通知。</string>
     <string name="SelectBetween">选择之间的</string>
     <string name="StickerSavedHint">贴纸已保存到相册</string>
     <string name="RegistrationDate">注册日期</string>
