@@ -1344,7 +1344,6 @@ public class LocaleController {
             }
         }
         try {
-            Locale newLocale;
             String[] args;
             if (!TextUtils.isEmpty(localeInfo.pluralLangCode)) {
                 args = localeInfo.pluralLangCode.split("_");
@@ -1353,11 +1352,7 @@ public class LocaleController {
             } else {
                 args = localeInfo.shortName.split("_");
             }
-            if (args.length == 1) {
-                newLocale = new Locale(args[0]);
-            } else {
-                newLocale = new Locale(args[0], args[1]);
-            }
+            Locale newLocale = createResourceLocale(localeInfo);
             if (override) {
                 languageOverride = localeInfo.shortName;
 
@@ -1442,6 +1437,48 @@ public class LocaleController {
     public static String getCurrentLanguageName() {
         LocaleInfo localeInfo = getInstance().currentLocaleInfo;
         return localeInfo == null || TextUtils.isEmpty(localeInfo.name) ? getString("LanguageName", R.string.LanguageName) : localeInfo.name;
+    }
+
+    // Bare scripts (e.g. zh-Hant) don't match region-qualified resources before API 24; map to a region.
+    private static final HashMap<String, String> scriptToRegion = new HashMap<>();
+    static {
+        scriptToRegion.put("zh-Hans", "CN");
+        scriptToRegion.put("zh-Hant", "TW");
+    }
+
+    // Use the full language code, not pluralLangCode (which collapses zh-Hant/zh-Hans to "zh").
+    private static Locale createResourceLocale(LocaleInfo localeInfo) {
+        Locale locale = localeFromCode(localeInfo.shortName);
+        if (locale == null) {
+            locale = localeFromCode(localeInfo.baseLangCode);
+        }
+        if (locale == null) {
+            locale = localeFromCode(localeInfo.pluralLangCode);
+        }
+        return locale != null ? locale : Locale.getDefault();
+    }
+
+    private static Locale localeFromCode(String code) {
+        if (TextUtils.isEmpty(code)) {
+            return null;
+        }
+        Locale locale = Locale.forLanguageTag(code.replace('_', '-'));
+        String language = locale.getLanguage();
+        if (TextUtils.isEmpty(language) || "und".equals(language)) {
+            String[] args = code.split("_");
+            locale = args.length == 1 ? new Locale(args[0]) : new Locale(args[0], args[1]);
+            language = locale.getLanguage();
+        }
+        if (TextUtils.isEmpty(language)) {
+            return null;
+        }
+        if (TextUtils.isEmpty(locale.getCountry()) && !TextUtils.isEmpty(locale.getScript())) {
+            String region = scriptToRegion.get(language + "-" + locale.getScript());
+            if (region != null) {
+                locale = new Locale.Builder().setLocale(locale).setRegion(region).build();
+            }
+        }
+        return locale;
     }
 
     private String getStringInternal(String key, int res) {
@@ -3154,20 +3191,7 @@ public class LocaleController {
                 saveOtherLanguages();
                 try {
                     if (currentLocaleInfo == localeInfo) {
-                        Locale newLocale;
-                        String[] args;
-                        if (!TextUtils.isEmpty(localeInfo.pluralLangCode)) {
-                            args = localeInfo.pluralLangCode.split("_");
-                        } else if (!TextUtils.isEmpty(localeInfo.baseLangCode)) {
-                            args = localeInfo.baseLangCode.split("_");
-                        } else {
-                            args = localeInfo.shortName.split("_");
-                        }
-                        if (args.length == 1) {
-                            newLocale = new Locale(args[0]);
-                        } else {
-                            newLocale = new Locale(args[0], args[1]);
-                        }
+                        Locale newLocale = createResourceLocale(localeInfo);
                         languageOverride = localeInfo.shortName;
 
                         SharedPreferences preferences = MessagesController.getGlobalMainSettings();
