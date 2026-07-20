@@ -155,7 +155,7 @@ public class NekoGeneralSettingsActivity extends BaseNekoSettingsActivity {
     protected void onItemClick(UItem item, View view, int position, float x, float y) {
         var id = item.id;
         if (id == ipv6Row) {
-            NekoConfig.toggleIPv6();
+            NekoConfig.togglePreferIPv6();
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(NekoConfig.preferIPv6);
             }
@@ -165,7 +165,7 @@ public class NekoGeneralSettingsActivity extends BaseNekoSettingsActivity {
                 }
             }
         } else if (id == disabledInstantCameraRow) {
-            NekoConfig.toggleDisabledInstantCamera();
+            NekoConfig.toggleDisableInstantCamera();
             if (view instanceof TextCheckCell) {
                 ((TextCheckCell) view).setChecked(NekoConfig.disableInstantCamera);
             }

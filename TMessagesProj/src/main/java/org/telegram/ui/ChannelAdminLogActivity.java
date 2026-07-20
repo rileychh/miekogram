@@ -178,6 +178,7 @@ import me.vkryl.core.reference.ReferenceList;
 import dev.rileychh.nekogram.MessageDetailsActivity;
 import dev.rileychh.nekogram.NekoConfig;
 import dev.rileychh.nekogram.helpers.WebAppHelper;
+import dev.rileychh.nekogram.tlv.TlViewer;
 
 public class ChannelAdminLogActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
@@ -2381,7 +2382,7 @@ public class ChannelAdminLogActivity extends BaseFragment implements Notificatio
     private boolean processSelectedOptionLongClick(int option) {
         switch (option) {
             case OPTION_DETAILS: {
-                WebAppHelper.openTLViewer(this, selectedObject.currentEvent);
+                TlViewer.openTlViewer(this, selectedObject.currentEvent);
                 return true;
             }
         }

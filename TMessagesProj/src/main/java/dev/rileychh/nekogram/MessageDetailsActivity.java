@@ -41,8 +41,8 @@ import java.util.Locale;
 
 import dev.rileychh.nekogram.helpers.MessageHelper;
 import dev.rileychh.nekogram.helpers.UserHelper;
-import dev.rileychh.nekogram.helpers.WebAppHelper;
 import dev.rileychh.nekogram.settings.BaseNekoSettingsActivity;
+import dev.rileychh.nekogram.tlv.TlViewer;
 
 public class MessageDetailsActivity extends BaseNekoSettingsActivity implements NotificationCenter.NotificationCenterDelegate {
 
@@ -476,7 +476,7 @@ public class MessageDetailsActivity extends BaseNekoSettingsActivity implements 
 
             showDialog(dialog);
         } else if (id == exportRow) {
-            WebAppHelper.openTLViewer(this,
+            TlViewer.openTlViewer(this,
                     messageObject.currentEvent != null ? messageObject.currentEvent : messageObject.messageOwner);
         }
     }

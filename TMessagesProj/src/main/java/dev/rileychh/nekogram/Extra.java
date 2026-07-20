@@ -1,11 +1,9 @@
 package dev.rileychh.nekogram;
 
-import org.lsposed.lsparanoid.Obfuscate;
 import org.telegram.messenger.BuildConfig;
 
 import dev.rileychh.nekogram.helpers.UserHelper;
 
-@Obfuscate
 public class Extra {
 
     public static int APP_ID = BuildConfig.API_ID;
