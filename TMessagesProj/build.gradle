@@ -170,7 +170,7 @@ androidComponents {
             var task = project.tasks.register("generateTlReaders${variant.name.capitalize()}", GenerateTlReadersTask) {
                 schemaDir = file("$rootDir/TMessagesProj_AppTests/tlscheme")
                 tlrpcFile = file("$projectDir/src/main/java/org/telegram/tgnet/TLRPC.java")
-                outputFile = "tw/nekomimi/nekogram/tlv/TlReaders.java"
+                outputFile = "dev/rileychh/nekogram/tlv/TlReaders.java"
             }
             javaSource.addGeneratedSourceDirectory(task, GenerateTlReadersTask::getOutputFolder)
         }
