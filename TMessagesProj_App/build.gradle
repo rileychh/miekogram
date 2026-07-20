@@ -16,7 +16,7 @@ sentry {
     autoInstallation {
         enabled = false
     }
-    ignoredBuildTypes = ["debug", "release"]
+    ignoredBuildTypes = ["debug", "release", "play"]
 }
 
 android {
