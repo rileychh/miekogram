@@ -13871,13 +13871,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 presentFragment(new ProxyListActivity());
             });
 
-            final SharedPreferences preferences = ApplicationLoader.applicationContext
-                    .getSharedPreferences("mainconfig", Activity.MODE_PRIVATE);
-
-            final String proxyAddress = preferences.getString("proxy_ip", "");
-            final boolean proxyEnabled = preferences.getBoolean("proxy_enabled", false);
-            final boolean proxyVisible = proxyEnabled && !TextUtils.isEmpty(proxyAddress)
-                    || getMessagesController().blockedCountry && !SharedConfig.proxyList.isEmpty();
+            final boolean proxyVisible = !SharedConfig.proxyList.isEmpty();
 
             if (proxyVisible) {
                 io.addGap();
