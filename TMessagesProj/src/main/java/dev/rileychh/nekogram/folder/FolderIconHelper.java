@@ -11,7 +11,6 @@ import java.util.LinkedHashMap;
 
 import dev.rileychh.nekogram.NekoConfig;
 
-
 public class FolderIconHelper {
     public static LinkedHashMap<String, Integer> folderIcons = new LinkedHashMap<>() {{
         put("\uD83D\uDC31", R.drawable.filter_cat);
@@ -108,35 +107,6 @@ public class FolderIconHelper {
 
     public static int getIconWidth() {
         return AndroidUtilities.dp(24);
-    }
-
-    public static int getPadding() {
-        if (NekoConfig.tabsTitleType == NekoConfig.TITLE_TYPE_MIX) {
-            return AndroidUtilities.dp(5);
-        }
-        return 0;
-    }
-
-    public static int getTotalIconWidth() {
-        int result = 0;
-        if (NekoConfig.tabsTitleType != NekoConfig.TITLE_TYPE_TEXT) {
-            result = getIconWidth() + getPadding();
-        }
-        return result;
-    }
-
-    public static int getPaddingTab() {
-        if (NekoConfig.tabsTitleType != NekoConfig.TITLE_TYPE_ICON) {
-            return 24;
-        }
-        return 12;
-    }
-
-    public static float getInternalPaddingTab() {
-        if (NekoConfig.tabsTitleType != NekoConfig.TITLE_TYPE_ICON) {
-            return 12.5f;
-        }
-        return 6.25f;
     }
 
     public static int getTabIcon(String emoji) {
