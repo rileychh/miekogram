@@ -334,6 +334,7 @@ import dev.rileychh.nekogram.forward.ForwardItem;
 import dev.rileychh.nekogram.forward.ForwardPopupWrapper;
 import dev.rileychh.nekogram.MessageDetailsActivity;
 import dev.rileychh.nekogram.NekoConfig;
+import dev.rileychh.nekogram.messageshot.MessageShotGenerator;
 import dev.rileychh.nekogram.helpers.MessageHelper;
 import dev.rileychh.nekogram.helpers.QrHelper;
 import dev.rileychh.nekogram.helpers.EmojiHelper;
@@ -1660,6 +1661,7 @@ public class ChatActivity extends BaseFragment implements
     private final static int change_colors = 27;
     private final static int tag_message = 28;
     private final static int boost_group = 29;
+    private final static int message_shot = 77;
 
     private final static int show_pinned = 90;
     private final static int delete_history = 91;
@@ -3876,6 +3878,12 @@ public class ChatActivity extends BaseFragment implements
                         undoView.showWithAction(0, UndoView.ACTION_TEXT_COPIED, null);
                     }
                     clearSelectionMode();
+                } else if (id == message_shot) {
+                    if (!isMessageShotSelectionEligible()) {
+                        return;
+                    }
+                    ArrayList<MessageObject> selected = new ArrayList<>(getForwardingMessages());
+                    MessageShotGenerator.create(ChatActivity.this, selected, ChatActivity.this::clearSelectionMode);
                 } else if (id == delete) {
                     if (getParentActivity() == null) {
                         return;
@@ -10468,6 +10476,20 @@ public class ChatActivity extends BaseFragment implements
         return INavigationLayout.BackButtonState.BACK;
     }
 
+    private boolean isMessageShotSelectionEligible() {
+        if (selectedMessagesIds[0].size() + selectedMessagesIds[1].size() == 0 || isPeerNoForwards() || hasSelectedNoforwardsMessage()) {
+            return false;
+        }
+        for (int accountIndex = 0; accountIndex < selectedMessagesIds.length; accountIndex++) {
+            for (int index = 0; index < selectedMessagesIds[accountIndex].size(); index++) {
+                if (!MessageShotGenerator.isMessageEligible(selectedMessagesIds[accountIndex].valueAt(index))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private void createActionMode() {
         if (selectedMessagesCountTextView != null || getContext() == null) {
             return;
@@ -10528,6 +10550,7 @@ public class ChatActivity extends BaseFragment implements
             }
             actionModeViews.add(actionMode.addItemWithWidth(star, R.drawable.msg_fave, dp(48), LocaleController.getString(R.string.AddToFavorites)));
             actionModeViews.add(actionMode.addItemWithWidth(copy, R.drawable.msg_copy, dp(48), LocaleController.getString(R.string.Copy)));
+            actionModeViews.add(actionMode.addItemWithWidth(message_shot, R.drawable.msg_sticker, dp(48), LocaleController.getString(R.string.MessageShot)));
             if (!isSavedMessages && getDialogId() != UserObject.VERIFY) {
                 actionModeViews.add(actionMode.addItemWithWidth(forward, R.drawable.msg_forward, dp(48), LocaleController.getString(R.string.Forward)));
                 if (NekoConfig.showNoQuoteForward) actionModeViews.add(actionMode.addItemWithWidth(ForwardItem.ID_FORWARD_NOQUOTE, R.drawable.msg_forward, dp(48), LocaleController.getString(R.string.NoQuoteForward)));
@@ -10538,10 +10561,12 @@ public class ChatActivity extends BaseFragment implements
             actionModeViews.add(actionMode.addItemWithWidth(edit, R.drawable.msg_edit, dp(48), LocaleController.getString(R.string.Edit)));
             actionModeViews.add(actionMode.addItemWithWidth(star, R.drawable.msg_fave, dp(48), LocaleController.getString(R.string.AddToFavorites)));
             actionModeViews.add(actionMode.addItemWithWidth(copy, R.drawable.msg_copy, dp(48), LocaleController.getString(R.string.Copy)));
+            actionModeViews.add(actionMode.addItemWithWidth(message_shot, R.drawable.msg_sticker, dp(48), LocaleController.getString(R.string.MessageShot)));
             actionModeViews.add(actionMode.addItemWithWidth(delete, R.drawable.msg_delete, dp(48), LocaleController.getString(R.string.Delete)));
         }
         actionMode.setItemVisibility(edit, canEditMessagesCount == 1 && selectedMessagesIds[0].size() + selectedMessagesIds[1].size() == 1 ? View.VISIBLE : View.GONE);
         actionMode.setItemVisibility(copy, !isPeerNoForwards() && selectedMessagesCanCopyIds[0].size() + selectedMessagesCanCopyIds[1].size() != 0 ? View.VISIBLE : View.GONE);
+        actionMode.setItemVisibility(message_shot, isMessageShotSelectionEligible() ? View.VISIBLE : View.GONE);
         actionMode.setItemVisibility(star, selectedMessagesCanStarIds[0].size() + selectedMessagesCanStarIds[1].size() != 0 ? View.VISIBLE : View.GONE);
         actionMode.setItemVisibility(delete, cantDeleteMessagesCount == 0 ? View.VISIBLE : View.GONE);
         actionMode.setItemVisibility(tag_message, getUserConfig().isPremium() ? View.VISIBLE : View.GONE);
@@ -19502,6 +19527,7 @@ public class ChatActivity extends BaseFragment implements
                 createActionMode();
                 ActionBarMenuItem saveItem = actionBar.createActionMode().getItem(save_to);
                 ActionBarMenuItem copyItem = actionBar.createActionMode().getItem(copy);
+                ActionBarMenuItem messageShotItem = actionBar.createActionMode().getItem(message_shot);
                 ActionBarMenuItem starItem = actionBar.createActionMode().getItem(star);
                 ActionBarMenuItem editItem = actionBar.createActionMode().getItem(edit);
                 ActionBarMenuItem forwardItem = actionBar.createActionMode().getItem(forward);
@@ -19593,6 +19619,9 @@ public class ChatActivity extends BaseFragment implements
                     copyVisible = copyItem.getVisibility();
                     copyItem.setVisibility(!noforwards && selectedMessagesCanCopyIds[0].size() + selectedMessagesCanCopyIds[1].size() != 0 ? View.VISIBLE : View.GONE);
                     newCopyVisible = copyItem.getVisibility();
+                }
+                if (messageShotItem != null) {
+                    messageShotItem.setVisibility(isMessageShotSelectionEligible() ? View.VISIBLE : View.GONE);
                 }
                 if (starItem != null) {
                     starVisible = starItem.getVisibility();
@@ -19728,7 +19757,8 @@ public class ChatActivity extends BaseFragment implements
                         (copyItem != null && copyItem.getVisibility() == View.VISIBLE ? 1 : 0) +
                         (deleteItem != null && deleteItem.getVisibility() == View.VISIBLE ? 1 : 0) +
                         (starItem != null && starItem.getVisibility() == View.VISIBLE ? 1 : 0) +
-                        (shareItem != null && shareItem.getVisibility() == View.VISIBLE ? 1 : 0)
+                        (shareItem != null && shareItem.getVisibility() == View.VISIBLE ? 1 : 0) +
+                        (messageShotItem != null && messageShotItem.getVisibility() == View.VISIBLE ? 1 : 0)
                     ) < 4 ? View.VISIBLE : View.GONE);
                 }
             }

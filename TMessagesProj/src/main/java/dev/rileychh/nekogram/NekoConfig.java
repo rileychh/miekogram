@@ -726,6 +726,7 @@ public class NekoConfig {
             editor.putBoolean("tryToOpenAllLinksInIV", object.get("tryToOpenAllLinksInIV").getAsBoolean());
         }
         if (object.has("unmuteVideosWithVolumeButtons")) {
+
             editor.putBoolean("unmuteVideosWithVolumeButtons", object.get("unmuteVideosWithVolumeButtons").getAsBoolean());
         }
         if (object.has("useSystemEmoji")) {
